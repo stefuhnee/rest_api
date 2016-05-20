@@ -8,11 +8,13 @@
   * submit a link to your PR in canvas
 
 ##Description
-Create a two rest resource rest API with Express that's backed by Mongo. I'm leaving this pretty open to interpretation. I want you to write this from scratch, don't just copy and paste code from class or previous projects. Also, implement a non CRUD endpoint.
+Create a single resource (like /penguins or /seals) REST API with Express.
+
+Write a full set of CRUD routes for your resource. You can persist it however you like for the sake of testing, we'll be connecting it to Mongo later in the week.
 
 
 ##Rubric
-Use of Express: 3pts
-Use of Mongo: 3pts
+CRUD Routes: 4pts
+Use of Express: 2pts
 Tests: 2pts
 Project Organization: 2pts
