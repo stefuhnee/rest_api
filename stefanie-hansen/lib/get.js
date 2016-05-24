@@ -7,19 +7,18 @@ module.exports = function get(req, res) {
     if (err) {
       console.log('Error reading directory', err);
       res.sendStatus(404);
-      res.end();
     }
     else if (files.indexOf(`${id}.json`) > -1) {
       fs.readFile(__dirname + `/../data/${id}.json`, (err, data) => {
         if (err) {
           console.log('Error reading file', err);
           res.sendStatus(404);
-          res.end();
         } else {
           res.send(`You requested the contents of ${id}.json: \n${data.toString()}`);
-          res.end();
         }
       });
+    } else {
+      res.sendStatus(404);
     }
   });
 };

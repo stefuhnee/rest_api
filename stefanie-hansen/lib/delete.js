@@ -7,10 +7,8 @@ module.exports = function del(req, res) {
     if (err) {
       console.log('Error deleting file', err);
       res.sendStatus(404);
-      res.end();
     } else {
       res.send(`File ${id}.json successfully deleted`);
-      res.end();
     }
   });
 };
