@@ -23,22 +23,28 @@ describe('Express router tests', () => {
   });
 
   describe('POST route tests', () => {
-    it('should respond to a POST request to /plants/:id without errors', (done) => {
-      request('localhost:3000')
-      .post('/plants/test')
-      .end((err, res) => {
-        expect(err).to.eql(null);
-        expect(res).to.have.status(200);
-        done();
+    let fileArray = [];
+    before('checking to make sure file is there before delete request', (done) => {
+      fs.readdir(__dirname + '/../data', (err, files) => {
+        fileArray = files;
       });
+      done();
     });
-    it('should respond to a POST request to /plants/:id by creating a new JSON file and sending a response with the contents of that file/request to confirm', (done) => {
+
+    it('should respond to a POST request to /plants/:id without errors if a file with the url-defined name does not already exist and with an error if a file already exists. If a new file is created, it should have the content defined by the request body', (done) => {
       request('localhost:3000')
       .post('/plants/test')
       .send({"test":"test"})
       .end((err, res) => {
-        expect(fs.readFileSync(__dirname + '/../data/test.json').toString()).to.eql('{"test":"test"}');
-        expect(res.text.split(' ').pop().trim()).to.eql('{"test":"test"}');
+        if (fileArray.indexOf('test.json') === -1) {
+          expect(err).to.eql(null);
+          expect(res).to.have.status(200);
+          expect(fs.readFileSync(__dirname + '/../data/test.json').toString()).to.eql('{"test":"test"}');
+          expect(res.text.split(' ').pop().trim()).to.eql('{"test":"test"}');
+        } else {
+          expect(err).to.not.eql(null);
+          expect(res).to.have.status(400);
+        }
         done();
       });
     });
@@ -76,7 +82,7 @@ describe('Express router tests', () => {
     });
     it('should respond to a PUT request to /plants/:id by creating or replacing a JSON file and sending a response with the contents of that file/request to confirm', (done) => {
       request('localhost:3000')
-      .post('/plants/test')
+      .put('/plants/test')
       .send({"test":"test"})
       .end((err, res) => {
         expect(fs.readFileSync(__dirname + '/../data/test.json').toString()).to.eql('{"test":"test"}');
