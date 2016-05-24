@@ -16,7 +16,6 @@ module.exports = function get(req, res) {
           res.sendStatus(404);
           res.end();
         } else {
-          console.log('data', data.toString())
           res.send(`You requested the contents of ${id}.json: \n${data.toString()}`);
           res.end();
         }
