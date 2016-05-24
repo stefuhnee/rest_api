@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
           res.sendStatus(404);
           res.end('Error: Cannot read file');
         } else {
-          res.send(`You requested ${id}.json: `, data.toString());
+          res.send(`You requested the contents of ${id}.json: \n${data.toString()}`);
           res.end();
         }
       });
@@ -36,15 +36,25 @@ router.post('/:id', (req, res) => {
   } else {
     fs.writeFile(__dirname + `/../data/${id}.json`, JSON.stringify(req.body), (err) => {
       if (err) console.log(err);
-      res.send('received');
+      res.send(`Received request and wrote file ${id}.json with the following contents: \n${JSON.stringify(req.body)}`);
       res.end();
     });
   }
 });
 
 router.put('/:id', (req, res) => {
-  res.send(`Put received for path ${id}`);
   let id = req.params.id;
+  if (!req.body) {
+    res.sendStatus(400);
+    res.send('Error: No body sent with request');
+    res.end();
+  } else {
+    fs.writeFile(__dirname + `/../data/${id}.json`, JSON.stringify(req.body), (err) => {
+      if (err) console.log(err);
+      res.send(`Received request and wrote file ${id}.json with the following contents: \n${JSON.stringify(req.body)}`);
+      res.end();
+    });
+  }
 });
 
 router.delete('/:id', (req, res) => {
