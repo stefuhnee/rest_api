@@ -6,7 +6,7 @@ const chaiHTTP = require('chai-http');
 chai.use(chaiHTTP);
 const request = chai.request;
 const fs = require('fs');
-require('../lib/server');
+require('../server');
 
 describe('Express router tests', () => {
 

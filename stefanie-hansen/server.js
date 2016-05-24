@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-const plantRouter = require('./plant-routes');
+const plantRouter = require('./lib/plant-routes');
 
 app.use(jsonParser);
 app.use('/plants', plantRouter);
