@@ -6,18 +6,35 @@ const fs = require('fs');
 
 router.get('/:id', (req, res) => {
   let id = req.params.id;
-  res.send(`Get received for path ${id}`);
+  fs.readdir(__dirname + '/../data', (err, files) => {
+    if (err) {
+      console.log('Error reading directory', err);
+      res.end('Error: Cannot read directory');
+    }
+    if (files.indexOf(`${id}.json`) > -1) {
+      fs.readFile(__dirname + `/../data/${id}.json`, (err, data) => {
+        if (err) {
+          console.log('Error reading file', err);
+          res.end('Error: Cannot read file');
+        }
+        res.send(`You requested ${id}.json: `, data.toString());
+        res.end();
+      });
+    }
+  });
 });
 
 router.post('/:id', (req, res) => {
   let id = req.params.id;
-  if (req.body) {
-    fs.writeFile(__dirname + `/../data/${id}.json`, JSON.stringify(req.body), (err) => {
-      if (err) console.log(err);
-      return res.send('File received');
-    });
+  if (!req.body) {
+    res.send('Error: No body sent with request');
+    res.end();
   }
-  res.end('No body');
+  fs.writeFile(__dirname + `/../data/${id}.json`, JSON.stringify(req.body), (err) => {
+    if (err) console.log(err);
+    res.send('received');
+    res.end();
+  });
 });
 
 router.put('/:id', (req, res) => {
