@@ -11,7 +11,6 @@ app.use('/plants', plantRouter);
 
 app.all('*', (req, res) => {
   res.sendStatus(404);
-  res.end();
 });
 
 app.listen(3000, () => {
