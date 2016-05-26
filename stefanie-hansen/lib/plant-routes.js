@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
       {
         commonName: req.body.commonName,
         scientificName: req.body.scientificName,
-        medicinalUses: req.body.medicinalUses,
+        uses: req.body.uses,
         zone: req.body.zone
       }, (err, plant) => {
       if (err) return next(err);

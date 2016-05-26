@@ -2,10 +2,16 @@
 
 const mongoose = require('mongoose');
 
+const Uses = mongoose.Schema({
+  commonName: /*Plant.commonName,*/
+  medicinal: Array,
+  nutritional: Array
+});
+
 const Plant = mongoose.Schema({
   commonName: {type: String, required: true},
   scientificName: {type: String, required: true},
-  medicinalUses: {type: String, required: true},
+  uses: [Uses],
   zone: {type: Number, required: true}
 });
 
