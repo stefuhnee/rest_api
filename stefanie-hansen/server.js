@@ -9,13 +9,13 @@ const supplementRouter = require('./routes/supplement-routes');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
-const dbPort = process.env.MONGOLAB_URI || 'mongodb://localhost/dev_db'
+const dbPort = process.env.MONGOLAB_URI || 'mongodb://localhost/dev_db';
 mongoose.connect(dbPort);
 
 app.use(morgan('dev'));
 app.use(jsonParser);
 app.use('/plants', plantRouter);
-app.use('/supplements', supplementRouter)
+app.use('/supplements', supplementRouter);
 
 app.use((err, req, res, next) => {
   res.send('Error: ', err.message);

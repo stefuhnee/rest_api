@@ -3,7 +3,6 @@
 const express = require('express');
 const router = express.Router();
 const Plant = require('../schema/plant');
-let plantsReturned;
 
 router.all('/zones', (req, res, next) => {
   let minZone = 100;
