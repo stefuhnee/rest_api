@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 
 const Uses = mongoose.Schema({
-  commonName: /*Plant.commonName,*/
   medicinal: Array,
   nutritional: Array
 });

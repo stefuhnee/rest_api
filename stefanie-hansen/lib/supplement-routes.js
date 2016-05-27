@@ -2,10 +2,10 @@
 
 const express = require('express');
 const router = express.Router();
-const Plant = require('../schema/plant');
+const Supplement = require('../schema/supplement');
 
 router.get('/', (req, res, next) => {
-  Plant.find({}, (err, data) => {
+  Supplement.find({}, (err, data) => {
     if (err) return next(err);
     else res.json(data);
   });
@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 router.put('/', (req, res, next) => {
   if (!req.body) return res.sendStatus(400);
   let _id = req.body._id;
-  Plant.findOneAndUpdate({_id}, req.body, (err, data) => {
+  Supplement.findOneAndUpdate({_id}, req.body, (err, data) => {
     if (err) return next(err);
     return res.json({"Message":"Successfully updated"});
   });
@@ -25,18 +25,18 @@ router.post('/', (req, res, next) => {
     return res.sendStatus(400);
   }
   else {
-    Plant.findOne(
+    Supplement.findOne(
       {
-        commonName: req.body.commonName,
-        scientificName: req.body.scientificName,
-        uses: req.body.uses,
-        zone: req.body.zone
-      }, (err, plant) => {
+        name: req.body.name,
+        medicinalEffects: req.body.medicinalEffects,
+        sideEffects: req.body.sideEffects
+        sideEffects: Array
+      }, (err, supplement) => {
       if (err) return next(err);
       else {
-        if (!plant) {
-          let newPlant = new Plant(req.body);
-          newPlant.save((err, data) => {
+        if (!supplement) {
+          let newSupplement = new Supplement(req.body);
+          newSupplement.save((err, data) => {
             if (err) return next(err);
             else return res.json(data);
           });
@@ -50,10 +50,10 @@ router.post('/', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   let _id = req.params.id;
-  Plant.findOneAndRemove({_id}, null, (err, data) => {
+  Supplement.findOneAndRemove({_id}, null, (err, data) => {
     if (err) return next(err);
     else {
-      return res.send(`Deleted plant with ID of ${req.params.id}`);
+      return res.send(`Deleted supplement with ID of ${req.params.id}`);
     }
   });
 });
