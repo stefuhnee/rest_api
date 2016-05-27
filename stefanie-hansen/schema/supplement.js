@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Supplement = mongoose.Schema({
   name: {type: String, required: true},
   medicinalEffects: {type: Array, required: true},
-  sideEffects: Array
+  sideEffects: {type: Array, required: false}
 });
 
 module.exports = mongoose.model('supplement', Supplement);

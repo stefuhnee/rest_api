@@ -29,8 +29,7 @@ router.post('/', (req, res, next) => {
       {
         name: req.body.name,
         medicinalEffects: req.body.medicinalEffects,
-        sideEffects: req.body.sideEffects
-        sideEffects: Array
+        sideEffects: req.body.sideEffects,
       }, (err, supplement) => {
       if (err) return next(err);
       else {
