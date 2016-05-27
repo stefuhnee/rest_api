@@ -53,11 +53,8 @@ describe('Plant router tests', () => {
         {
           commonName:'test',
           scientificName:'testus maximus',
-          uses:
-          {
-            medicinal:['test','test'],
-            nutritional:['test']
-          },
+          medicinalUses: ['test', 'test'],
+          nutritionalValue: ['test'],
           zone: 2
         })
       .end((err, res) => {
@@ -65,8 +62,8 @@ describe('Plant router tests', () => {
         expect(res).to.have.status(200);
         expect(res.body.commonName).to.eql('test');
         expect(res.body.scientificName).to.eql('testus maximus');
-        expect(res.body.uses.medicinal).to.eql(['test', 'test']);
-        expect(res.body.uses.nutritional).to.eql(['test']);
+        expect(res.body.medicinalUses).to.eql(['test', 'test']);
+        expect(res.body.nutritionalValue).to.eql(['test']);
         expect(res.body.zone).to.eql(2);
         done();
       });
@@ -79,11 +76,8 @@ describe('Plant router tests', () => {
         {
           commonName:'test',
           scientificName:'testus maximus',
-          uses:
-          {
-            medicinal:['test','test'],
-            nutritional:['test']
-          },
+          medicinalUses: ['test', 'test'],
+          nutritionalValue: ['test'],
           zone: 2
         })
       .end((err, res) => {
@@ -96,16 +90,15 @@ describe('Plant router tests', () => {
 
   describe('tests that need data', () => {
     let testPlant;
+    let testPlant2;
+    let testPlant3;
 
     beforeEach((done) => {
       testPlant = new Plant({
         commonName:'test',
         scientificName:'testus maximus',
-        uses:
-        {
-          medicinal:['test','test'],
-          nutritional:['test']
-        },
+        medicinalUses: ['test', 'test'],
+        nutritionalValue: ['test'],
         zone: 2
       });
 
@@ -136,6 +129,44 @@ describe('Plant router tests', () => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
         expect(res.text).to.eql(`Deleted plant with ID of ${testPlant._id}`);
+        done();
+      });
+    });
+
+    before((done) => {
+
+      testPlant2 = new Plant({
+        commonName:'test2',
+        scientificName:'testus maximus',
+        medicinalUses: ['test', 'test'],
+        nutritionalValue: ['test'],
+        zone: 100
+      });
+
+      testPlant3 = new Plant({
+        commonName:'test3',
+        scientificName:'testus maximus',
+        medicinalUses: ['test', 'test'],
+        nutritionalValue: ['test'],
+        zone: 40
+      });
+
+      testPlant2.save((err, plant) => {
+        if (err) return console.log('Error: ', err);
+      });
+      testPlant3.save((err, plant) => {
+        if (err) return console.log('Error: ', err);
+        done();
+      });
+    });
+
+    it('should get a range of zones included in the database upon any kind of request to the /plants/zones route', (done) => {
+      request('localhost:3000')
+      .get('/plants/zones')
+      .end((err, res) => {
+        expect(err).to.eql(null);
+        expect(res).to.have.status(200);
+        expect(res.text).to.eql(`The range of zones represented in the database includes 2 - 100`);
         done();
       });
     });

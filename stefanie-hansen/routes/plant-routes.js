@@ -3,6 +3,20 @@
 const express = require('express');
 const router = express.Router();
 const Plant = require('../schema/plant');
+let plantsReturned;
+
+router.all('/zones', (req, res, next) => {
+  let minZone = 100;
+  let maxZone = 0;
+  Plant.find({}, (err, plants) => {
+    if (err) return next(err);
+    plants.forEach((plant) => {
+      if (plant.zone < minZone) minZone = plant.zone;
+      if (plant.zone > maxZone) maxZone = plant.zone;
+    });
+    res.send(`The range of zones represented in the database includes ${minZone} - ${maxZone}`);
+  });
+});
 
 router.get('/', (req, res, next) => {
   Plant.find({}, (err, data) => {
@@ -29,7 +43,6 @@ router.post('/', (req, res, next) => {
       {
         commonName: req.body.commonName,
         scientificName: req.body.scientificName,
-        zone: req.body.zone
       }, (err, plant) => {
       if (err) return next(err);
       else {
