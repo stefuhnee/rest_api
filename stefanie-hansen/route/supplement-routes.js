@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const Supplement = require('../schema/supplement');
+const Supplement = require('../model/supplement');
 
 router.get('/', (req, res, next) => {
   Supplement.find({}, (err, data) => {

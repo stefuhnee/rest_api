@@ -18,7 +18,7 @@ router.get('/signin', basicAuth, jwtAuth, (req, res, next) => {
   });
 });
 
-router.post('signup', bodyParser, jwtAuth, (req, res, next) => {
+router.post('/signup', bodyParser, (req, res, next) => {
   let newUser = new User(req.body);
   newUser.password = newUser.hashPassword();
   req.body.password = null;
