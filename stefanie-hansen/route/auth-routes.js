@@ -16,3 +16,16 @@ router.get('/signin', basicAuth, (req, res, next) => {
     return res.json({token: user.generateToken()});
   });
 });
+
+router.post('signup', bodyParser, (req, res, next) => {
+  let newUser = new User(req.body);
+  newUser.password = newUser.hashPassword();
+  req.body.password = null;
+  User.findOne({username: req.body.username}, (err, user) => {
+    if (err || user) return next(new Error('Could not create user'));
+    newUser.save((err, user) => {
+      if (err) return next(new Error('Could not create user'));
+      res.json({token: user.generateToken()});
+    });
+  });
+});
