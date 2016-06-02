@@ -1,7 +1,6 @@
 'use strict';
 
-const express = require('express');
-const app = express();
+const app = require('express')();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const plantRouter = require('./routes/plant-routes');
@@ -19,6 +18,7 @@ app.use('/supplements', supplementRouter);
 
 app.use((err, req, res, next) => {
   res.send('Error: ', err.message);
+  next(err);
 });
 
 app.all('*', (req, res) => {
