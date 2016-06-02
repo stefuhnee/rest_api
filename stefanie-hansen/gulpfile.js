@@ -43,21 +43,20 @@ const opts = {
 };
 
 
-gulp.task('linter' , () => {
-  return gulp.src(['./*.js', './test/*.js', './lib/*.js'])
+gulp.task('linter', () => {
+  return gulp.src(['./*.js', './schema/*.js', './route/*.js', './test/*.js', './lib/*.js'])
     .pipe(lint(opts))
     .pipe(lint.format());
 });
 
 gulp.task('tests', () => {
-  return gulp.src(['./*.js', './test/*.js', './lib/*.js'], {read: false})
+  return gulp.src(['./test/*.js'], {read: false})
     .pipe(mocha({reporter: 'nyan'}));
 });
 
 gulp.task('watch', () => {
-  gulp.watch(['./*.js', './test/*.js', './lib/*.js'], ['linter', 'tests']);
+  gulp.watch(['./*.js', './schema/*.js', './route/*.js', './test/*.js', './lib/*.js'], ['linter', 'tests']);
 });
 
 gulp.task('default', ['linter', 'tests', 'watch'], () => {
-
 });
