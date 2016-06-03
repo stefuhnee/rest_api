@@ -102,7 +102,7 @@ describe('Plant router tests', () => {
         zone: 2
       });
 
-      testPlant.save((err, plant) => {
+      testPlant.save((err) => {
         if (err) return console.log('Error: ', err);
         done();
       });
@@ -151,10 +151,10 @@ describe('Plant router tests', () => {
         zone: 40
       });
 
-      testPlant2.save((err, plant) => {
+      testPlant2.save((err) => {
         if (err) return console.log('Error: ', err);
       });
-      testPlant3.save((err, plant) => {
+      testPlant3.save((err) => {
         if (err) return console.log('Error: ', err);
         done();
       });
@@ -166,7 +166,7 @@ describe('Plant router tests', () => {
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
-        expect(res.text).to.eql(`The range of zones represented in the database includes 2 - 100`);
+        expect(res.text).to.eql('The range of zones represented in the database includes 2 - 100');
         done();
       });
     });
