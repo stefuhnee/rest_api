@@ -79,7 +79,7 @@ describe('Supplement router tests', () => {
         sideEffects: ['test', 'test']
       });
 
-      testSupplement.save((err, supplement) => {
+      testSupplement.save((err) => {
         if (err) return console.log('Error: ', err);
         done();
       });

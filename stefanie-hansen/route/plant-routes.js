@@ -27,9 +27,9 @@ router.get('/', (req, res, next) => {
 router.put('/', (req, res, next) => {
   if (!req.body) return res.sendStatus(400);
   let _id = req.body._id;
-  Plant.findOneAndUpdate({_id}, req.body, (err, data) => {
+  Plant.findOneAndUpdate({_id}, req.body, (err) => {
     if (err) return next(err);
-    return res.json({"Message":"Successfully updated"});
+    return res.json({Message:'Successfully updated'});
   });
 });
 
@@ -61,7 +61,7 @@ router.post('/', (req, res, next) => {
 // DON'T SAVE DUPLICATES
 
   if (!req.body) return res.sendStatus(400);
-  findPlant.then((plant) => {
+  findPlant.then(() => {
     return savePlant;
   }).then((plant) => {
     return res.json(plant);
@@ -96,7 +96,7 @@ router.post('/', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   let _id = req.params.id;
-  Plant.findOneAndRemove({_id}, null, (err, data) => {
+  Plant.findOneAndRemove({_id}, null, (err) => {
     if (err) return next(err);
     else {
       return res.send(`Deleted plant with ID of ${req.params.id}`);

@@ -14,9 +14,9 @@ router.get('/', (req, res, next) => {
 router.put('/', (req, res, next) => {
   if (!req.body) return res.sendStatus(400);
   let _id = req.body._id;
-  Supplement.findOneAndUpdate({_id}, req.body, (err, data) => {
+  Supplement.findOneAndUpdate({_id}, req.body, (err) => {
     if (err) return next(err);
-    return res.json({"Message":"Successfully updated"});
+    return res.json({Message:'Successfully updated'});
   });
 });
 
@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
       {
         name: req.body.name,
         medicinalEffects: req.body.medicinalEffects,
-        sideEffects: req.body.sideEffects,
+        sideEffects: req.body.sideEffects
       }, (err, supplement) => {
       if (err) return next(err);
       else {
@@ -49,7 +49,7 @@ router.post('/', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   let _id = req.params.id;
-  Supplement.findOneAndRemove({_id}, null, (err, data) => {
+  Supplement.findOneAndRemove({_id}, null, (err) => {
     if (err) return next(err);
     else {
       return res.send(`Deleted supplement with ID of ${req.params.id}`);
