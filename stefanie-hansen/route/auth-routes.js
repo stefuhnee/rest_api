@@ -7,7 +7,7 @@ const jwtAuth = require('../lib/jwt-auth');
 const User = require('../model/user');
 const router = module.exports = express.Router();
 
-router.get('/signin', basicAuth, jwtAuth, (req, res, next) => {
+router.get('/login', basicAuth, jwtAuth, (req, res, next) => {
   let username = req.auth.username;
   User.findOne({username}, (err, user) => {
     if (err || !user) return next(new Error('Cannot find user'));

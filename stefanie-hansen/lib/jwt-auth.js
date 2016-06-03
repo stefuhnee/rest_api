@@ -5,7 +5,8 @@ const User = require('../model/user');
 const secret = process.env.SECRET || 'testPass';
 
 module.exports = function(req, res, next) {
-  let token = req.body.token || req.headers.token;
+  let token = req.headers.token || req.body.token;
+  console.log('req from jwt', token);
   if (!token) return next(new Error('No token provided'));
 
   try {
@@ -15,7 +16,7 @@ module.exports = function(req, res, next) {
   }
 
   User.findOne({_id: token}, (err, user) => {
-    if (err) return next(new Error('Cannot find  user'));
+    if (err) return next(new Error('Cannot find user'));
     req.user = user;
     next();
   });

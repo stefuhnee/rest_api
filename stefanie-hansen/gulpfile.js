@@ -44,7 +44,7 @@ const opts = {
 
 
 gulp.task('linter', () => {
-  return gulp.src(['./*.js', './schema/*.js', './route/*.js', './test/*.js', './lib/*.js'])
+  return gulp.src(['./*.js', './model/*.js', './route/*.js', './test/*.js', './lib/*.js'])
     .pipe(lint(opts))
     .pipe(lint.format());
 });
@@ -55,7 +55,7 @@ gulp.task('tests', () => {
 });
 
 gulp.task('watch', () => {
-  gulp.watch(['./*.js', './schema/*.js', './route/*.js', './test/*.js', './lib/*.js'], ['linter', 'tests']);
+  gulp.watch(['./*.js', './model/*.js', './route/*.js', './test/*.js', './lib/*.js'], ['linter', 'tests']);
 });
 
 gulp.task('default', ['linter', 'tests', 'watch'], () => {

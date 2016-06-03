@@ -1,8 +1,7 @@
 'use strict';
 
 const app = require('express')();
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+const bodyParser = require('body-parser').json();
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const plantRouter = require('./route/plant-routes');
@@ -14,7 +13,7 @@ mongoose.connect(dbPort);
 
 app.use(morgan('dev'));
 
-app.use(jsonParser);
+app.use(bodyParser);
 
 app.use('/plants', plantRouter);
 
@@ -23,7 +22,7 @@ app.use('/supplements', supplementRouter);
 app.use('/', authRouter);
 
 app.all('*', (req, res) => {
-  res.sendStatus(404);
+  res.status(404).json({Message:'Not Found'});
 });
 
 app.use((err, req, res, next) => {
