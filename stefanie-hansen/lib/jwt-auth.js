@@ -6,7 +6,6 @@ const secret = process.env.SECRET || 'testPass';
 
 module.exports = function(req, res, next) {
   let token = req.headers.token || req.body.token;
-  console.log('req from jwt', token);
   if (!token) return next(new Error('No token provided'));
 
   try {

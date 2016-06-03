@@ -19,22 +19,48 @@ describe('unit tests', () => {
   let req;
   let token;
 
-  baseString = new Buffer('user:pass').toString('base64');
-  authString = 'Basic ' + baseString;
-  req = {
-    headers: {
-      authorization: authString
-    }
-  };
+  before((done) => {
+    request('localhost:3000')
+    .post('/signup')
+    .send({username:'test', password:'test'})
+    .end((err, res) => {
+      token = res.body.token;
+      done();
+    });
+  });
 
   it('should decode a basic auth string into username and password', () => {
+
+    baseString = new Buffer('user:pass').toString('base64');
+    authString = 'Basic ' + baseString;
+    req = {
+      headers: {
+        authorization: authString
+      }
+    };
 
     basicAuth(req, {}, () => {
       expect(req.auth).to.eql({username: 'user', password: 'pass'});
     });
   });
 
-  describe('auth tests', () => {
+  it('should find a user given a token for JWT authorization', (done) => {
+
+    req = {
+      headers: {
+        token: token
+      }
+    };
+
+    jwtAuth(req, {}, () => {
+      expect(req).to.have.property('user');
+      expect(req.user.username).to.eql('test');
+      done();
+    });
+  });
+
+
+  describe('auth route tests', () => {
 
     after((done)=> {
       process.env.MONGOLAB_URI = dbPort;
@@ -46,7 +72,7 @@ describe('unit tests', () => {
     it('should sign up a new user', (done) => {
       request('localhost:3000')
       .post('/signup')
-      .send({username:'test', password:'test'})
+      .send({username:'test2', password:'test2'})
       .end((err, res) => {
         token = res.body.token;
         expect(err).to.eql(null);
@@ -59,7 +85,7 @@ describe('unit tests', () => {
     it('should sign in a user with a token', (done) => {
       request('localhost:3000')
       .get('/login')
-      .auth('test', 'test')
+      .auth('test2', 'test2')
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
