@@ -26,8 +26,7 @@ app.all('*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  res.send('Error: ', err.message);
-  next(err);
+  res.send('Error');
 });
 
 app.listen(3000, () => {

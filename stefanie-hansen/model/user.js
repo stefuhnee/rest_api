@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+mongoose.Promise = require('bluebird');
 const secret = process.env.SECRET || 'testPass';
 
 const User = new mongoose.Schema({
