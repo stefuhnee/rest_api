@@ -5,6 +5,7 @@ const chaiHTTP = require('chai-http');
 chai.use(chaiHTTP);
 const Plant = require('../model/plant');
 const mongoose = require('mongoose');
+const User = require('../model/user');
 
 const expect = chai.expect;
 const request = chai.request;
@@ -92,6 +93,17 @@ describe('Plant router tests', () => {
     let testPlant;
     let testPlant2;
     let testPlant3;
+    let token;
+
+    before((done) => {
+      request('localhost:3000')
+      .post('/signup')
+      .send({username:'test', password:'test'})
+      .end((err, res) => {
+        token = res.body.token;
+        done();
+      });
+    });
 
     beforeEach((done) => {
       testPlant = new Plant({
@@ -125,6 +137,7 @@ describe('Plant router tests', () => {
       console.log(testPlant);
       request('localhost:3000')
       .delete(`/plants/${testPlant._id}`)
+      .set('token', token)
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);

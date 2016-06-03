@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Supplement = require('../model/supplement');
+const jwtAuth = require('../lib/jwt-auth');
 
 router.get('/', (req, res, next) => {
   Supplement.find({}, (err, data) => {
@@ -47,7 +48,7 @@ router.post('/', (req, res, next) => {
   }
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', jwtAuth, (req, res, next) => {
   let _id = req.params.id;
   Supplement.findOneAndRemove({_id}, null, (err) => {
     if (err) return next(err);

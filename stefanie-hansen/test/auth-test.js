@@ -56,23 +56,9 @@ describe('unit tests', () => {
       });
     });
 
-    // it('should find a user with a token', () => {
-    //   req = {
-    //     headers: {
-    //       token: token,
-    //       authorization: authString
-    //     }
-    //   };
-    //
-    //   jwtAuth(req, {}, () => {
-    //     expect(req.user).to.eql(null);
-    //   });
-    // });
-
     it('should sign in a user with a token', (done) => {
       request('localhost:3000')
       .get('/login')
-      .set('token', token)
       .auth('test', 'test')
       .end((err, res) => {
         expect(err).to.eql(null);

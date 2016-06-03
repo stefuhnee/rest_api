@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Plant = require('../model/plant');
+const jwtAuth = require('../lib/jwt-auth');
 
 router.all('/zones', (req, res, next) => {
   let minZone = 100;
@@ -57,7 +58,7 @@ router.post('/', (req, res, next) => {
   }
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', jwtAuth, (req, res, next) => {
   let _id = req.params.id;
   Plant.findOneAndRemove({_id}, null, (err) => {
     if (err) return next(err);
