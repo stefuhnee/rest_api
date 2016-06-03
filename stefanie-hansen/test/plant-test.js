@@ -5,7 +5,6 @@ const chaiHTTP = require('chai-http');
 chai.use(chaiHTTP);
 const Plant = require('../model/plant');
 const mongoose = require('mongoose');
-const User = require('../model/user');
 
 const expect = chai.expect;
 const request = chai.request;

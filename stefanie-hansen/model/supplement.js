@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 const Supplement = mongoose.Schema({
   name: {type: String, required: true},

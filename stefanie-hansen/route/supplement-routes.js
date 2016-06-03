@@ -22,9 +22,7 @@ router.put('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  if (!req.body) {
-    return res.sendStatus(400);
-  }
+  if (!req.body) return res.sendStatus(400);
   else {
     Supplement.findOne(
       {

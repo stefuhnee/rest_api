@@ -5,7 +5,6 @@ const chaiHTTP = require('chai-http');
 chai.use(chaiHTTP);
 const Supplement = require('../model/supplement');
 const mongoose = require('mongoose');
-const jwtAuth = require('../lib/jwt-auth');
 
 const expect = chai.expect;
 const request = chai.request;
