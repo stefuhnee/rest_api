@@ -34,65 +34,28 @@ router.put('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-
-  let findPlant = new Promise((resolve, reject) => {
-    Plant.findOne({
-      commonName: req.body.commonName,
-      scientificName: req.body.scientificName
-    }, (err, plant) => {
-      if (err || plant) {
-        next(new Error('Database error'));
-        reject(new Error('Database error'));
-      }
-      resolve(plant);
-    });
-  });
-
-  let savePlant = new Promise((resolve, reject) => {
-    let newPlant = new Plant(req.body);
-    newPlant.save((err, plant) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(plant);
-    });
-  });
-
-// DON'T SAVE DUPLICATES
-
   if (!req.body) return res.sendStatus(400);
-  findPlant.then(() => {
-    return savePlant;
-  }).then((plant) => {
-    return res.json(plant);
-  }).catch((err) => {
-    console.log('error');
-    return res.json(err);
-  });
+  else {
+    Plant.findOne(
+      {
+        commonName: req.body.commonName,
+        scientificName: req.body.scientificName
+      }, (err, plant) => {
+      if (err) return next(err);
+      else {
+        if (!plant) {
+          let newPlant = new Plant(req.body);
+          newPlant.save((err, data) => {
+            if (err) return next(err);
+            else return res.json(data);
+          });
+        } else {
+          return res.sendStatus(400);
+        }
+      }
+    });
+  }
 });
-//
-//
-//   else {
-//     Plant.findOne(
-//       {
-//         commonName: req.body.commonName,
-//         scientificName: req.body.scientificName,
-//       }, (err, plant) => {
-//       if (err) return next(err);
-//       else {
-//         if (!plant) {
-//           let newPlant = new Plant(req.body);
-//           newPlant.save((err, data) => {
-//             if (err) return next(err);
-//             else return res.json(data);
-//           });
-//         } else {
-//           return res.sendStatus(400);
-//         }
-//       }
-//     });
-//   }
-// });
 
 router.delete('/:id', (req, res, next) => {
   let _id = req.params.id;
