@@ -3,7 +3,6 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
 const basicAuth = require('../lib/basic-auth');
-const jwtAuth = require('../lib/jwt-auth');
 const User = require('../model/user');
 const router = module.exports = express.Router();
 

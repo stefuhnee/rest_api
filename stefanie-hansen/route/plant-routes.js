@@ -68,9 +68,4 @@ router.delete('/:id', jwtAuth, (req, res, next) => {
   });
 });
 
-router.use((err, req, res, next) => {
-  res.status(400).send('Error');
-  next();
-});
-
 module.exports = router;
