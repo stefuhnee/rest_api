@@ -52,11 +52,25 @@ describe('unit tests', () => {
       }
     };
 
-    jwtAuth(req, {}, () => {
+    jwtAuth(req, null, () => {
       expect(req).to.have.property('user');
       expect(req.user.username).to.eql('test');
       done();
     });
+  });
+
+  it('should error on invalid token', (done) => {
+    req = {
+      headers: {
+        token: 'invalid'
+      }
+    };
+
+    jwtAuth(req, null, (err) => {
+      expect(err.message).to.eql('Invalid token');
+      done();
+    });
+
   });
 
 
