@@ -3,7 +3,7 @@
 const chai = require('chai');
 const chaiHTTP = require('chai-http');
 chai.use(chaiHTTP);
-const Supplement = require('../schema/supplement');
+const Supplement = require('../model/supplement');
 const mongoose = require('mongoose');
 
 const expect = chai.expect;
@@ -71,6 +71,17 @@ describe('Supplement router tests', () => {
 
   describe('tests that need data', () => {
     let testSupplement;
+    let token;
+
+    before((done) => {
+      request('localhost:3000')
+      .post('/signup')
+      .send({username:'test', password:'test'})
+      .end((err, res) => {
+        token = res.body.token;
+        done();
+      });
+    });
 
     beforeEach((done) => {
       testSupplement = new Supplement({
@@ -79,7 +90,7 @@ describe('Supplement router tests', () => {
         sideEffects: ['test', 'test']
       });
 
-      testSupplement.save((err, supplement) => {
+      testSupplement.save((err) => {
         if (err) return console.log('Error: ', err);
         done();
       });
@@ -102,6 +113,7 @@ describe('Supplement router tests', () => {
       console.log(testSupplement);
       request('localhost:3000')
       .delete(`/supplements/${testSupplement._id}`)
+      .set('token', token)
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);

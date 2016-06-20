@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 const Plant = mongoose.Schema({
   commonName: {type: String, required: true},

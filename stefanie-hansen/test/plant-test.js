@@ -3,7 +3,7 @@
 const chai = require('chai');
 const chaiHTTP = require('chai-http');
 chai.use(chaiHTTP);
-const Plant = require('../schema/plant');
+const Plant = require('../model/plant');
 const mongoose = require('mongoose');
 
 const expect = chai.expect;
@@ -92,6 +92,17 @@ describe('Plant router tests', () => {
     let testPlant;
     let testPlant2;
     let testPlant3;
+    let token;
+
+    before((done) => {
+      request('localhost:3000')
+      .post('/signup')
+      .send({username:'test', password:'test'})
+      .end((err, res) => {
+        token = res.body.token;
+        done();
+      });
+    });
 
     beforeEach((done) => {
       testPlant = new Plant({
@@ -102,7 +113,7 @@ describe('Plant router tests', () => {
         zone: 2
       });
 
-      testPlant.save((err, plant) => {
+      testPlant.save((err) => {
         if (err) return console.log('Error: ', err);
         done();
       });
@@ -125,6 +136,7 @@ describe('Plant router tests', () => {
       console.log(testPlant);
       request('localhost:3000')
       .delete(`/plants/${testPlant._id}`)
+      .set('token', token)
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
@@ -151,10 +163,10 @@ describe('Plant router tests', () => {
         zone: 40
       });
 
-      testPlant2.save((err, plant) => {
+      testPlant2.save((err) => {
         if (err) return console.log('Error: ', err);
       });
-      testPlant3.save((err, plant) => {
+      testPlant3.save((err) => {
         if (err) return console.log('Error: ', err);
         done();
       });
@@ -166,7 +178,7 @@ describe('Plant router tests', () => {
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
-        expect(res.text).to.eql(`The range of zones represented in the database includes 2 - 100`);
+        expect(res.text).to.eql('The range of zones represented in the database includes 2 - 100');
         done();
       });
     });
